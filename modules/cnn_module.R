@@ -1,0 +1,5 @@
+library(torch)
+source("config.R")
+source("modules/cnn_modules/cnn_model.R")
+source("modules/cnn_modules/train_model.R")
+source("modules/cnn_modules/evaluate_model.R")

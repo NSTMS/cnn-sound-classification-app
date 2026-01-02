@@ -15,65 +15,86 @@ load_and_resample_audio_sample <- function(audio_sample_path) {
         toWaveMC = NULL
       )
 
-      if (isTRUE(wav@stereo)) {
-        wav <- mono(wav, which = "both")
-      } else {
-        wav <- mono(wav, which = "left")
+      if (inherits(wav, "WaveMC")) {
+        first_channel <- wav@.Data[, 1]
+        wav <- Wave(
+          left = first_channel,
+          samp.rate = wav@samp.rate,
+          bit = wav@bit
+        )
+      } else if (inherits(wav, "Wave")) {
+        if (wav@stereo) {
+          wav <- mono(wav, which = "both")
+        }
       }
+      
       wav <- resample_audio_sample(wav)
       wav <- normalize_audio_sample_length(wav)
       return(wav)
     },
     error = function(e) {
-      cat("Błąd przy wczytywaniu pliku:", e$message, "\n")
-      return(NULL) # pominięcie pliku w przypadku błędu
+      cat("Błąd przy wczytywaniu pliku:", audio_sample_path, "-", e$message, "\n")
+      return(NULL)
     }
   )
 }
 
 normalize_audio_sample_length <- function(audio_sample) {
+  if (is.null(audio_sample)) return(NULL)
+  
   tryCatch(
     {
-      target_duration = AUDIO_CONFIG$duration
-      target_length = AUDIO_CONFIG$sample_rate * target_duration
-      current_data <- audio_sample@left
-      current_length = length(current_data)
-      diffrence = target_length - current_length
-      if (diffrence > 0) {
-        padding = rep(0, diffrence)
+      target_duration <- AUDIO_CONFIG$duration
+      target_length <- AUDIO_CONFIG$sample_rate * target_duration
+      
+      if (inherits(audio_sample, "Wave")) {
+        current_data <- audio_sample@left
+      } else {
+        cat("Nieoczekiwany typ obiektu audio\n")
+        return(NULL)
+      }
+      
+      current_length <- length(current_data)
+      difference <- target_length - current_length
+      
+      if (difference > 0) {
+        # dopełnianie zerami 
+        padding <- rep(0, difference)
         audio_sample@left <- c(current_data, padding)
-      } else if (diffrence < 0) {
+      } else if (difference < 0) {
+        # przycinanie
         audio_sample@left <- current_data[1:target_length]
       }
+      
       return(audio_sample)
     },
     error = function(e) {
       cat("Błąd przy normalizacji długości:", e$message, "\n")
-      return(NULL) # pominięcie pliku w przypadku błędu
+      return(NULL)
     }
   )
 }
 
 resample_audio_sample <- function(audio_sample) {
-  resample_wav <- audio_sample
+  if (is.null(audio_sample)) return(NULL)
+  
   tryCatch(
     {
-      if (
-        !is.na(audio_sample@samp.rate) &&
-          audio_sample@samp.rate != AUDIO_CONFIG$sample_rate
-      ) {
+      if (!is.na(audio_sample@samp.rate) &&
+          audio_sample@samp.rate != AUDIO_CONFIG$sample_rate) {
         resample_wav <- resamp(
           audio_sample,
           f = audio_sample@samp.rate,
           g = AUDIO_CONFIG$sample_rate,
           output = "Wave"
         )
+        return(resample_wav)
       }
-      return(resample_wav)
+      return(audio_sample)
     },
     error = function(e) {
       cat("Błąd przy próbie resamplingu:", e$message, "\n")
-      return(NULL) # pominięcie pliku w przypadku błędu
+      return(NULL)
     }
   )
 }
@@ -83,7 +104,6 @@ augment_spectrogram_with_time_mask <- function(mel_spec, time_mask_rate) {
   time_masked_spectogram <- time_mask(mel_spec)
   return(time_masked_spectogram)
 }
-
 
 augment_spectrogram_with_frequency_mask <- function(mel_spec, mask_length) {
   freq_mask <- torchaudio::transform_frequencymasking(freq_mask_param = mask_length)
@@ -101,12 +121,31 @@ mel_spectrogram_transformer <- torchaudio::transform_mel_spectrogram(
 )
 
 create_tensorized_mel_spectrogram <- function(audio_sample) {
-  waveform <- torch::torch_tensor(
-    audio_sample@left,
-    dtype = torch::torch_float()
+  if (is.null(audio_sample)) return(NULL)
+  
+  tryCatch(
+    {
+      if (!inherits(audio_sample, "Wave") || is.null(audio_sample@left)) {
+        cat("Nieprawidłowy obiekt audio\n")
+        return(NULL)
+      }
+      
+      waveform <- torch::torch_tensor(
+        audio_sample@left,
+        dtype = torch::torch_float()
+      )
+      
+      mel_spectogram <- mel_spectrogram_transformer(waveform)     
+      mel_spectogram <- torch_log(mel_spectogram + 1e-9)
+      mel_spectogram <- (mel_spectogram - mel_spectogram$mean()) / (mel_spectogram$std() + 1e-9)
+      
+      return(mel_spectogram)
+    },
+    error = function(e) {
+      cat("Błąd przy tworzeniu mel-spektrogramu:", e$message, "\n")
+      return(NULL)
+    }
   )
-  mel_spectogram <- mel_spectrogram_transformer(waveform)
-  return(mel_spectogram)
 }
 
 show_mel_spectogram <- function(wav) {
@@ -132,5 +171,5 @@ get_random_seewave_color_pallette <- function() {
       terrain.colors,
       topo.colors,
       cm.colors
-    ),1)[[1]])
+    ), 1)[[1]])
 }

@@ -2,13 +2,18 @@
 
 ## Transformacje Fouriera:
 - https://www.mathworks.com/help/matlab/ref/fft.html FFT
-- https://www.mathworks.com/help/signal/ref/stft.html // STFT
+- https://www.mathworks.com/help/signal/ref/stft.html STFT
 
 ## Konwolucyjne sieci neuronowe (CNN):
 - https://stanford.edu/~shervine/teaching/cs-230/cheatsheet-convolutional-neural-networks
 - https://www.ibm.com/think/topics/convolutional-neural-networks
 - https://www.datacamp.com/tutorial/introduction-to-convolutional-neural-networks-cnns
 - https://www.datacamp.com/blog/rectified-linear-unit-relu
+
+## Uczenie maszynowe:
+ -https://machinelearningmastery.com/start-here/#algorithms 
+- https://www.geeksforgeeks.org/machine-learning/underfitting-and-overfitting-in-machine-learning/
+- https://discuss.pytorch.org/t/defining-parameters-in-the-forward-pass/132554/4
 
 
 ## Przetwarzanie audio do celów uczenia maszynowego:
@@ -30,4 +35,4 @@
 - https://www.youtube.com/@ValerioVelardoTheSoundofAI
  
 
-*INFORMACJE NA DZIEŃ 28-12-2025*
+*INFORMACJE NA DZIEŃ 02-01-2026*
