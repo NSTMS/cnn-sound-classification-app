@@ -24,6 +24,5 @@ PATHS <- list(
   dataset = "dataset/",
   audio = "audio/",
   metadata = "dataset/metadata.csv",
-  evaluation = "audio/evaluation/",
-  models = "models/"
+  models = "models"
 )

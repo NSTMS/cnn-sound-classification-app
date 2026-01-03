@@ -8,7 +8,6 @@ train_model <- function(audio_files, labels = NULL) {
   for (i in seq_along(audio_files)) {
     audio_files[[i]]$classID <- audio_files[[i]]$classID + 1
   }
-  
 
   # podział danych na podzbiory 
   dataset_length <- length(audio_files)
@@ -63,10 +62,12 @@ train_model <- function(audio_files, labels = NULL) {
       if (length(mel_spec$shape) == 3) mel_spec <- mel_spec$unsqueeze(2)$permute(c(1, 2, 3, 4))
       
       # forward pass
+      # sieć generuje przewidywania na podstawie wejściowych danych, a potem mierzy, jak bardzo prognoza różni się od prawdy i na tej podstawie wylicza stratę
       predictions <- model(mel_spec) 
       loss <- loss_fn(predictions, labels) 
       
-      # backward pass
+      # backward pass - wsteczna propagacja błędu
+      # sieć sprawdza, jak duży błąd popełniła, i cofa się od końca do początku, sprawdzając, które wagi wewnątrz modelu trzeba zwiększyć, a które zmniejszyć, aby końcowo błąd był mniejszy
       optimiser$zero_grad() # reset gradientów
       loss$backward() # obliczanie nowych gradientów
       optimiser$step() # aktualizacja wag - krok w stronę minimalnej straty
@@ -97,7 +98,6 @@ train_model <- function(audio_files, labels = NULL) {
         
         if (length(mel_spec$shape) == 3) mel_spec <- mel_spec$unsqueeze(2)$permute(c(1, 2, 3, 4))
         
-        # forward pass
         predictions <- model(mel_spec)
         loss <- loss_fn(predictions, labels)
         

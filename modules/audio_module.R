@@ -120,7 +120,7 @@ mel_spectrogram_transformer <- torchaudio::transform_mel_spectrogram(
   f_max = AUDIO_CONFIG$fmax
 )
 
-create_tensorized_mel_spectrogram <- function(audio_sample) {
+create_tensorized_and_normalized_mel_spectrogram <- function(audio_sample) {
   if (is.null(audio_sample)) return(NULL)
   
   tryCatch(
@@ -148,10 +148,35 @@ create_tensorized_mel_spectrogram <- function(audio_sample) {
   )
 }
 
+
+create_mel_spectogram <- function(audio_sample) {
+  if (is.null(audio_sample)) return(NULL)
+  tryCatch(
+    {
+      if (!inherits(audio_sample, "Wave") || is.null(audio_sample@left)) {
+        cat("Nieprawidłowy obiekt audio\n")
+        return(NULL)
+      }
+      
+      waveform <- torch::torch_tensor(
+        audio_sample@left,
+        dtype = torch::torch_float()
+      )
+      
+      mel_spectogram <- mel_spectrogram_transformer(waveform)     
+      return(mel_spectogram)
+    },
+    error = function(e) {
+      cat("Błąd przy tworzeniu mel-spektrogramu:", e$message, "\n")
+      return(NULL)
+    }
+  )
+}
+
 show_mel_spectogram <- function(wav) {
   spectro(
     wav,
-    f = AUDIO_CONFIG$sample_rate,
+    f = wav@samp.rate,
     collevels = seq(-100, -15, 5),
     palette = get_random_seewave_color_pallette()
   )

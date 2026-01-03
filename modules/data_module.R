@@ -1,6 +1,13 @@
 source("config.R")
 source("modules/audio_module.R")
 
+load_class_names <- function(metadata_path) {
+  metadata <- load_metadata(metadata_path)
+  class_mapping <- unique(metadata[, c("classID", "class")])
+  class_mapping <- class_mapping[order(class_mapping$classID), ]
+  return(as.character(class_mapping$class))
+}
+
 load_metadata <- function(metadata_path) {
   if (!file.exists(metadata_path)) {
     stop("Plik metadanych nie istnieje: ", metadata_path)
@@ -78,7 +85,7 @@ process_single_audio_sample <- function(row) {
     return(NULL)
   }
   
-  mel_spec <- create_tensorized_mel_spectrogram(wav)
+  mel_spec <- create_tensorized_and_normalized_mel_spectrogram(wav)
   if (is.null(mel_spec)) {
     return(NULL) 
   }
