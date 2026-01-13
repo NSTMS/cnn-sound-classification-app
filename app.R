@@ -2,12 +2,13 @@ library(shiny)
 library(bslib)
 library(ggplot2)
 
-source("modules/cnn_module.R")
+source("modules/cnn_modules/predict_class.R")
 source("modules/audio_module.R")
 
 # Ścieżki i konfiguracja
 model_path <- file.path(getwd(), PATHS$models, "v1", "model_v1.pt")
 class_labels <- load_class_names(paste0(getwd(), "/", PATHS$metadata))
+
 
 ui <- page_fluid(
   theme = bs_theme(
