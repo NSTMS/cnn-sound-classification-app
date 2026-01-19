@@ -1,4 +1,4 @@
-dataset/*
+dataset/audio/*
 .Rproj
 .Rproj.user
 .Rhistory

@@ -5,14 +5,14 @@ source("app/components/ui_spectrogram_tab.R")
 source("app/components/ui_prediction_tab.R")
 source("app/components/ui_history_tab.R")
 source("app/components/ui_model_tab.R")
+source("app/components/ui_footer.R")
 
 ui <- fluidPage(
   theme = theme,
   tags$head(tags$style(HTML(css_))),
-  shinyFeedback::useShinyFeedback(),
-  
+
   app_header("CNN Sound Classification App"),
-  
+
   main_container(
     fluidRow(
       sidebar_panel_ui(),
@@ -26,7 +26,8 @@ ui <- fluidPage(
           history_tab_ui(),
           model_tab_ui()
         )
-      )
+      ),
+      footer()
     )
   )
 )

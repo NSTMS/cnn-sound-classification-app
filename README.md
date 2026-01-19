@@ -71,6 +71,6 @@ dataset/
 - Wyświetlenie metryk wydajności modelu
 - Generacja i wyświetlenie macierzy pomyłek
 
-## Ocena modelu V1
-- Do trenowania modelu V1 użyłem całego zbioru UrbanSound8K(z zastosowaniem proprocji wymienionych wyżej) oraz 50 epok treningowych. To połączenie dało zadowalające wyniki w postaci dokładności rzędu ~85% dokładności na zbiorze testowym. Z utworzonych wykresów można wywnioskować, że model najlepiej rozpoznaje `strzały z pistoletu` (około **93%** dokładności, co wydaje się logiczne, z uwagi na powtarzalność i głośność próbek), a najgorzej radzi sobie z rozpoznawaniem `bawiących się dzieci`(dokładność na poziomie ok. **73%**, co może wynikać z charakterystyki próbek, jako mniej powtarzalnych i bardziej zróżnicowanych).
+## Ocena modelu v1
+- Do trenowania modelu v1 użyłem całego zbioru UrbanSound8K(z zastosowaniem proprocji wymienionych wyżej) oraz 50 epok treningowych. To połączenie dało zadowalające wyniki w postaci dokładności rzędu ~85% dokładności na zbiorze testowym. Z utworzonych wykresów można wywnioskować, że model najlepiej rozpoznaje `strzały z pistoletu` (około **93%** dokładności, co wydaje się logiczne, z uwagi na powtarzalność i głośność próbek), a najgorzej radzi sobie z rozpoznawaniem `bawiących się dzieci`(dokładność na poziomie ok. **73%**, co może wynikać z charakterystyki próbek, jako mniej powtarzalnych i bardziej zróżnicowanych).
 - Co więcej, możemy zaobserować największy skok jakościowy modelu w okolicach 10-13 epoki, a po 30 epoce skok ten był już minimalny(z 83.85% do 84.54%), co sugeruje, że model osiągnął swój limit przy obecnej architekturze.

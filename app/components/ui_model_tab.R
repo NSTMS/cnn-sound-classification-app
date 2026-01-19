@@ -29,7 +29,7 @@ model_tab_ui <- function() {
           metric_card("85,53%", "Dokładność"),
           metric_card("gun_shot", "Najlepsza klasa"),
           metric_card("children_playing", "Najgorsza klasa"),
-          metric_card("v1.0", "Wersja modelu")
+          metric_card("v1.5", "Wersja modelu")
         )
       ),
       info_section(
@@ -54,7 +54,7 @@ model_tab_ui <- function() {
           p(
             style = "color: #6B7280; line-height: 1.6;",
             HTML(
-              "Do trenowania modelu V1 użyłem całego zbioru <strong>UrbanSound8K</strong>(z zastosowaniem proprocji wymienionych wyżej) oraz <strong>50 epok treningowych</strong>. To połączenie dało zadowalające wyniki w postaci dokładności rzędu <strong>~85% dokładności</strong> na zbiorze testowym. Z utworzonych wykresów można wywnioskować, że model najlepiej rozpoznaje <strong>strzały z pistoletu</strong> (około 93% dokładności, co wydaje się logiczne, z uwagi na powtarzalność i głośność próbek), a najgorzej radzi sobie z rozpoznawaniem <strong>bawiących się dzieci</strong>(dokładność na poziomie ok. 73%, co może wynikać z charakterystyki próbek, jako mniej powtarzalnych i bardziej zróżnicowanych)."
+              "Do trenowania modelu v1.5 użyłem całego zbioru <strong>UrbanSound8K</strong>(z zastosowaniem proprocji wymienionych wyżej) oraz <strong>50 epok treningowych</strong>. To połączenie dało zadowalające wyniki w postaci dokładności rzędu <strong>~85% dokładności</strong> na zbiorze testowym. Z utworzonych wykresów można wywnioskować, że model najlepiej rozpoznaje <strong>strzały z pistoletu</strong> (około 93% dokładności, co wydaje się logiczne, z uwagi na powtarzalność i głośność próbek), a najgorzej radzi sobie z rozpoznawaniem <strong>bawiących się dzieci</strong>(dokładność na poziomie ok. 73%, co może wynikać z charakterystyki próbek, jako mniej powtarzalnych i bardziej zróżnicowanych)."
             )
           ),
           br(),

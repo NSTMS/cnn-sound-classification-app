@@ -1,6 +1,5 @@
 library(shiny)
 library(bslib)
-library(shinyFeedback)
 library(dplyr)
 library(DT)
 library(ggplot2)
@@ -148,5 +147,29 @@ css_ <- "
   .status-success {
     background-color: #D1FAE5;
     color: #065F46;
+  }
+
+  .footer-link {
+    color: #C47335;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .footer-link:hover {
+    color: #A85C2A;
+    text-decoration: underline;
+  }
+  
+  .github-icon {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    color: #2C2D30;
+  }
+  
+  .footer-divider {
+    margin: 0 0.5rem;
+    color: #D1D5DB;
   }
 "
